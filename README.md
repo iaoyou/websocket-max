@@ -1,7 +1,15 @@
 # websocket-max
-websocket-max包含了多种websocket实现方式，其中有基于spring-websocekt，也有基于netty框架，即下即用。
+websocket-max包含了两个模块：
 
-## 项目介绍
+websocket-client中是基于netty框架实现的websocket客户端；
+
+websocket-server包含了多种websocket实现方式，其中有基于spring-websocekt，也有基于netty框架，即下即用。
+
+## websocket-clinet项目介绍
+
+基于netty框架，测试使用方法可以参考com.example.wsdemo.websocketclient.example1.Test类。
+
+## websocket-server项目介绍
 
 ### 例子一：
 

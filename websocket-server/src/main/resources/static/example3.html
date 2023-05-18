@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script type="text/javascript">
+        var subsc = "/topic/chat";
+        // 建立连接对象（还未发起连接）
+        var socket = new SockJS("http://localhost:9000/example3/ws");
+        // 获取 STOMP 子协议的客户端对象
+        var stompClient = Stomp.over(socket);
+        stompClient.debug = function (str) {
+            console.log("DEBUG---->" + str);
+        };
+        // 向服务器发起websocket连接并发送CONNECT帧
+        stompClient.connect({},
+            function connectCallback(frame) {
+                // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+                setMessageInnerHTML("连接成功");
+                console.log("---订阅：" + subsc);
+                stompClient.subscribe(subsc, function (res) {
+
+                    console.log("----res:" + res);
+                    re = JSON.parse(res.body);
+                    console.log(re);
+                    setMessageInnerHTML("你接收到的消息为:" + res.body);
+                });
+            },
+            function errorCallBack(error) {
+                // 连接失败时（服务器响应 ERROR 帧）的回调方法
+                setMessageInnerHTML("连接失败");
+            }
+        );
+
+        //发送消息
+        function send() {
+            var message = $("#content").val();
+            stompClient.send("/app/topic", {}, message);
+            sendMessageInnerHTML("/app/topic 你发送的消息:" + message);
+        }
+
+        //将消息显示在网页上
+        function setMessageInnerHTML(innerHTML) {
+            $("#in").html(innerHTML + '<br/>');
+        }
+
+        function sendMessageInnerHTML(innerHTML) {
+            $("#out").append(innerHTML + '<br/>');
+        }
+
+        $(function () {
+            $("#btn").click(function () {
+                send();
+            });
+
+        })
+    </script>
+
+</head>
+<body>
+<input id="content" class="form-control">
+<button id="btn" class="btn btn-info">发送</button>
+<div id="in"></div>
+<div id="out"></div>
+</body>
+</html>
