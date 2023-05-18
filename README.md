@@ -1,5 +1,5 @@
-# websocket-demo
-websocket-demo包含了多种websocket实现方式，其中有基于spring-websocekt，也有基于netty框架，即下即用。
+# websocket-max
+websocket-max包含了多种websocket实现方式，其中有基于spring-websocekt，也有基于netty框架，即下即用。
 
 ## 项目介绍
 
